@@ -1,0 +1,181 @@
+﻿<Window x:Class="SongTrainer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conventers="clr-namespace:SongTrainer.Conventers"
+        mc:Ignorable="d"
+
+        Title="MainWindow"
+        MinWidth="800"
+        MinHeight="450"
+        Height="600"
+        Width="800"
+        Loaded="WindowLoaded"
+        x:Name="mainWindow"
+        Background="#FF504D56"
+        Foreground="Black">
+
+    <Window.Resources>
+        <conventers:SecondsTimeSpanConventer x:Key="secondsTimeSpanConventer" />
+    </Window.Resources>
+
+    <DockPanel>
+        <WrapPanel
+            DockPanel.Dock="Bottom"
+            HorizontalAlignment="Center">
+            <Button
+                Click="ButtonSource"
+                Width="85"
+                Margin="10,5,10,5"
+                FontWeight="Bold"
+                >Open file</Button>
+            <Label
+                Content="Volume: "
+                Margin="0,5,0,5"
+                FontWeight="Bold"
+                Foreground="White" />
+            <Slider
+                Value="{Binding ElementName=player, Path=Volume}"
+                Minimum="0"
+                Maximum="1"
+                Width="100"
+                Margin="0,5,20,5"
+                VerticalAlignment="Center"
+                LargeChange="0.1" />
+            <Button
+                Click="ButtonPlay"
+                Width="50"
+                Margin="10,5,10,5"
+                FontWeight="Bold"
+                >Play</Button>
+            <Button
+                Click="ButtonPause"
+                Width="50"
+                Margin="10,5,10,5"
+                FontWeight="Bold"
+                >Pause</Button>
+            <Button
+                Click="ButtonStop"
+                Width="50"
+                Margin="10,5,10,5"
+                FontWeight="Bold"
+                >Stop</Button>
+            <Label
+                Content="Speed: "
+                Margin="20,5,0,5"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"
+                Foreground="White" />
+            <Slider
+                x:Name="speedSlider"
+                Value="{Binding ElementName=player, Path=SpeedRatio}"
+                Minimum="0.5"
+                Maximum="1.5"
+                Width="100"
+                VerticalAlignment="Center"
+                Margin="0,5,0,5"
+                Thumb.DragCompleted="SpeedSliderDragCompleted"
+                LargeChange="0.1" />
+            <Label
+                x:Name="speedRatioInPercentage"
+                Width="45"
+                Content="{Binding ElementName=speedSlider, Path=Value}"
+                ContentStringFormat="{}{0:0%}"
+                Foreground="White"
+                FontWeight="Bold"
+                Margin="0,5,0,5"
+                HorizontalAlignment="Left" />
+            <Label
+                Content="Loop: "
+                Margin="0,5,0,5"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"
+                Foreground="White" />
+            <CheckBox
+                x:Name="loopCheckBox"
+                Margin="0,5,10,5"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" />
+        </WrapPanel>
+
+        <Grid
+            DockPanel.Dock="Bottom"
+            Height="80"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition x:Name="mainColumn" />
+                <ColumnDefinition Width="50" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                x:Name="timeOfStartLoop"
+                Content="{Binding ElementName=startLoopSlider, Path=Value, Converter={StaticResource secondsTimeSpanConventer}}"
+                Foreground="White" FontWeight="Bold" />
+            <Slider
+                Grid.Row="0"
+                Grid.Column="1"
+                x:Name="startLoopSlider"
+                Thumb.DragCompleted="StartLoopSliderDragCompleted" />
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                x:Name="timeOfWatchedVideo"
+                Content="{Binding ElementName=progresBar, Path=Value, Converter={StaticResource secondsTimeSpanConventer}}"
+                Foreground="White"
+                FontWeight="Bold" />
+            <StatusBar
+                Grid.Row="1"
+                Grid.Column="1"
+                Background="Transparent">
+                <StatusBarItem
+                    x:Name="statusBarItem"
+                    HorizontalAlignment="Center">
+                    <ProgressBar
+                        x:Name="progresBar"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Width="{Binding ActualWidth, ElementName=statusBarItem, Mode=OneWay}" />
+                </StatusBarItem>
+            </StatusBar>
+            <Label
+                Grid.Column="2"
+                Grid.Row="1"
+                Content="{Binding ElementName=progresBar, Path=Maximum, Converter={StaticResource secondsTimeSpanConventer}}"
+                Foreground="White"
+                FontWeight="Bold" />
+            <Slider
+                Grid.Row="2"
+                Grid.Column="1"
+                x:Name="endLoopSlider"
+                VerticalAlignment="Center"
+                Thumb.DragCompleted="EndLoopSliderDragCompleted" />
+            <Label
+                Grid.Row="2"
+                Grid.Column="2"
+                x:Name="timeOfEndLoop"
+                Content="{Binding ElementName=endLoopSlider, Path=Value, Converter={StaticResource secondsTimeSpanConventer}}"
+                Foreground="White"
+                FontWeight="Bold" />
+        </Grid>
+
+        <MediaElement
+            Volume="0.5"
+            SpeedRatio="1.0"
+            LoadedBehavior="Manual"
+            x:Name="player"
+            MediaFailed="PlayerMediaFailed"
+            MediaOpened="PlayerMediaOpened" />
+    </DockPanel>
+</Window>
