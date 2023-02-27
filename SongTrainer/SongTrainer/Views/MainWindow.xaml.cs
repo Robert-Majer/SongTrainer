@@ -1,9 +1,10 @@
 ﻿using Microsoft.Win32;
+using SongTrainer.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace SongTrainer
+namespace SongTrainer.Views
 {
     public partial class MainWindow : Window
     {
@@ -14,38 +15,7 @@ namespace SongTrainer
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void ButtonPlay(object sender, RoutedEventArgs e)
-        {
-            player.Play();
-
-            if (timer != null)
-            {
-                timer.Start();
-            }
-        }
-
-        private void ButtonPause(object sender, RoutedEventArgs e)
-        {
-            player.Pause();
-
-            if (timer != null)
-            {
-                timer.Stop();
-            }
-        }
-
-        private void ButtonStop(object sender, RoutedEventArgs e)
-        {
-            player.Pause();
-            player.Position = TimeSpan.FromSeconds(startLoopSlider.Value);
-            progresBar.Value = startLoopSlider.Value;
-
-            if (timer != null)
-            {
-                timer.Stop();
-            }
+            DataContext = new MainViewModel();
         }
 
         private void PlayerMediaFailed(object sender, ExceptionRoutedEventArgs e)
@@ -137,28 +107,6 @@ namespace SongTrainer
                 player.Pause();
                 player.Position = TimeSpan.FromSeconds(startLoopSlider.Value);
                 progresBar.Value = startLoopSlider.Value;
-            }
-        }
-
-        private void ButtonSource(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Filter = "media files (*.mp3, *.mp4)|*.mp3;*mp4|mp3 files (*.mp3)|*.mp3|mp4 files (*.mp4)|*.mp4";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.RestoreDirectory = true;
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                var newSource = new Uri(openFileDialog.FileName);
-                player.Source = newSource;
-
-                speedSlider.Value = 1;
-                player.SpeedRatio = 1;
-                startLoopSlider.Value = startLoopSlider.Minimum;
-                endLoopSlider.Value = endLoopSlider.Maximum;
-                player.Volume = 0.5;
-                loopCheckBox.IsChecked = false;
             }
         }
 

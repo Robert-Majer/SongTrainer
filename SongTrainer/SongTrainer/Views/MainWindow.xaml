@@ -1,4 +1,4 @@
-﻿<Window x:Class="SongTrainer.MainWindow"
+﻿<Window x:Class="SongTrainer.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -25,7 +25,8 @@
             DockPanel.Dock="Bottom"
             HorizontalAlignment="Center">
             <Button
-                Click="ButtonSource"
+                Command="{Binding ButtonSourceCommand}"
+                CommandParameter="Pause"
                 Width="85"
                 Margin="10,5,10,5"
                 FontWeight="Bold"
@@ -44,19 +45,22 @@
                 VerticalAlignment="Center"
                 LargeChange="0.1" />
             <Button
-                Click="ButtonPlay"
+                Command="{Binding ButtonPlayCommand}"
+                CommandParameter="Play"
                 Width="50"
                 Margin="10,5,10,5"
                 FontWeight="Bold"
                 >Play</Button>
             <Button
-                Click="ButtonPause"
+                Command="{Binding ButtonPauseCommand}"
+                CommandParameter="Pause"
                 Width="50"
                 Margin="10,5,10,5"
                 FontWeight="Bold"
                 >Pause</Button>
             <Button
-                Click="ButtonStop"
+                Command="{Binding ButtonStopCommand}"
+                CommandParameter="Stop"
                 Width="50"
                 Margin="10,5,10,5"
                 FontWeight="Bold"
