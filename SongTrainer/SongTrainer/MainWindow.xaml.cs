@@ -144,10 +144,13 @@ namespace SongTrainer
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
+            openFileDialog.Filter = "media files (*.mp3, *.mp4)|*.mp3;*mp4|mp3 files (*.mp3)|*.mp3|mp4 files (*.mp4)|*.mp4";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+
             if (openFileDialog.ShowDialog() == true)
             {
                 var newSource = new Uri(openFileDialog.FileName);
-
                 player.Source = newSource;
 
                 speedSlider.Value = 1;
